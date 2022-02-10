@@ -1,14 +1,8 @@
-import _ from "lodash";
+import "./test.ts";
+new Promise(
+  setTimeout(() => {
+    console.log(1);
+  })
+);
 
-function component() {
-  const element = document.createElement("div");
-
-  element.innerHTML = _.join(["Hello", "webpack1"], " ");
-
-  return element;
-}
-setTimeout(() => {
-  console.log(1);
-});
-
-document.body.appendChild(component());
+async function a() {}

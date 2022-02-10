@@ -4,7 +4,7 @@ const path = require("path");
 module.exports = {
   mode: "development",
   entry: {
-    app: "./src/index.js",
+    app: ["./src/index.js"],
   },
   output: {
     filename: "[name].[contenthash].js",
@@ -14,20 +14,17 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
-          options: {
-            presets: [
-              "@babel/preset-env",
-              {
-                targets: {
-                  browsers: [">1%"],
-                },
-              },
-            ],
-          },
+        },
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "ts-loader",
         },
       },
     ],
