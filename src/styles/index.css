@@ -1,12 +1,22 @@
-@import "./common.css";
-
 body {
-  font-size: 20px;
+  color: #000;
 }
-
-.div1 {
-  font-size: 12px;
+.img-box {
+  width: 44px;
+  height: 32px;
 }
-/* :local(.div1) {
-  font-size: 12px;
-} */
+.icon1 {
+  background: url("../assets/icon1.png");
+}
+.icon2 {
+  background: url("../assets/icon2.png");
+}
+.icon3 {
+  background: url("../assets/icon3.png");
+}
+.icon4 {
+  background: url("../assets/icon4.png");
+}
+.icon5 {
+  background: url("../assets/icon5.png");
+}
