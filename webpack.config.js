@@ -2,13 +2,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { webpack } = require("webpack");
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
   const common = {
     mode: "none",
     entry: {
       app: "./src/app.js",
-      // app2: "./src/app2.js",
     },
     output: {
       filename: "[name].[contenthash].js",
@@ -54,6 +55,10 @@ module.exports = (env, argv) => {
         template: "./src/index.html",
       }),
       new CleanWebpackPlugin(),
+      // new BundleAnalyzerPlugin(),
+      new webpack.DllRerencePlugin({
+        manifest: require("./src/dll/lodash.json"),
+      }),
     ],
     optimization: {
       minimize: true,
@@ -61,16 +66,16 @@ module.exports = (env, argv) => {
         name: "vendors",
         chunks: "all",
         minSize: 0,
-        cacheGroups: {
-          // vendor: {
-          //   test: /[\\/]node_modules[\\/]/,
-          //   name: "vendors",
-          //   chunks: "all",
-          // },
-        },
+        // cacheGroups: {
+        //   vendor: {
+        //     test: /[\\/]node_modules[\\/]/,
+        //     name: "vendors",
+        //     chunks: "all",
+        //   },
+        // },
       },
-      // runtimeChunk: "single",
-      runtimeChunk: true,
+      runtimeChunk: "single",
+      // runtimeChunk: true,
     },
     devServer: {
       port: 9001,
