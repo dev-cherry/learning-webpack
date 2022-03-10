@@ -2,7 +2,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { webpack } = require("webpack");
+const webpack = require("webpack");
+const HappyPack = require("happypack");
+const os = require("os");
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
@@ -30,6 +33,7 @@ module.exports = (env, argv) => {
           use: {
             loader: "babel-loader",
           },
+          // use: ["happypack/loader?id=babel"],
         },
         {
           test: /\.css$/,
@@ -56,9 +60,17 @@ module.exports = (env, argv) => {
       }),
       new CleanWebpackPlugin(),
       // new BundleAnalyzerPlugin(),
-      new webpack.DllRerencePlugin({
-        manifest: require("./src/dll/lodash.json"),
-      }),
+      // new webpack.DllReferencePlugin({
+      //   manifest: require("./src/dll/vendor-manifest.json"),
+      // }),
+      // new HappyPack({
+      //   id: "babel",
+      //   loaders: ["babel-loader?cacheDirectory"],
+      //   // 共享进程池
+      //   threadPool: happyThreadPool,
+      //   // 日志输出
+      //   verbose: true,
+      // }),
     ],
     optimization: {
       minimize: true,
@@ -66,16 +78,16 @@ module.exports = (env, argv) => {
         name: "vendors",
         chunks: "all",
         minSize: 0,
-        // cacheGroups: {
-        //   vendor: {
-        //     test: /[\\/]node_modules[\\/]/,
-        //     name: "vendors",
-        //     chunks: "all",
-        //   },
-        // },
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendors",
+            chunks: "all",
+          },
+        },
       },
-      runtimeChunk: "single",
-      // runtimeChunk: true,
+      // runtimeChunk: "single",
+      runtimeChunk: true,
     },
     devServer: {
       port: 9001,
